@@ -7,17 +7,28 @@ const index = (req, res) => {
 }
 
 const show =(req, res) =>{
-    Movie.findById(req.params.id).populate('cast').then((movie) =>{ res.status(404).json(movie)
+    Movie.findById(req.params.id)
+    .populate('cast')
+    .then((movie) => {
+         res.status(200).json(movie)
     })
 }
 
 const create = (req, res) => {
     Movie.create(req.body).then((movie) =>{
-        res.status(202).json(movie)
+        res.status(201).json(movie)
     })
 }
 
 const update =(req,res) => {
+    Movie.findByIdAndUpdate(req.params.id, req.body, {new:true})
+    .populate('cast')
+    .them((movie)=>{
+        res.status(200).json(movie)
+   })
+}
+
+const deleteOne = (req, res)=> {
     Movie.findByIdAndRemove(req.params.id).then((movie)=> {
         res.status(200).json(movie)
     })
@@ -28,5 +39,5 @@ module.exports = {
     show,
     create,
     update,
-
+    delete: deleteOne,
 }
